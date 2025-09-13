@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "ap-southeast-2"
+  region = "us-east-1"
 }
 
 resource "aws_vpc" "eks_vpc" {
@@ -14,7 +14,7 @@ resource "aws_subnet" "eks_subnet" {
   count = 2
   vpc_id                  = aws_vpc.eks_vpc.id
   cidr_block              = cidrsubnet(aws_vpc.eks_vpc.cidr_block, 8, count.index)
-  availability_zone       = element(["ap-southeast-2a", "ap-southeast-2b"], count.index)
+  availability_zone       = element(["us-east-1a", "us-east-1b"], count.index)
   map_public_ip_on_launch = true
 
   tags = {
@@ -103,12 +103,12 @@ resource "aws_eks_node_group" "eks_node_group" {
   subnet_ids      = aws_subnet.eks_subnet[*].id
 
   scaling_config {
-    desired_size = 3
-    max_size     = 3
-    min_size     = 3
+    desired_size = 2
+    max_size     = 2
+    min_size     = 2
   }
 
-  instance_types = ["t2.medium"]
+  instance_types = ["t2.small"]
 
   remote_access {
     ec2_ssh_key = var.ssh_key_name
