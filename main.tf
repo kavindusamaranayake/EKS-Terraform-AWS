@@ -108,7 +108,7 @@ resource "aws_eks_node_group" "eks_node_group" {
     min_size     = 1
   }
 
-  instance_types = ["t2.small"]
+  instance_types = ["t2.micro"]
 
   remote_access {
     ec2_ssh_key = var.ssh_key_name
