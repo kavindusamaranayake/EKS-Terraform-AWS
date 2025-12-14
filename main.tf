@@ -157,6 +157,14 @@ resource "aws_security_group" "eks_node_sg" {
     self      = true
   }
 
+  # Control plane → worker nodes (kubelet, exec, logs)
+  ingress {
+    from_port       = 1025
+    to_port         = 65535
+    protocol        = "tcp"
+    security_groups = [aws_security_group.eks_cluster_sg.id]
+  }
+
   ingress {
     from_port   = 22
     to_port     = 22
@@ -165,20 +173,20 @@ resource "aws_security_group" "eks_node_sg" {
     description = "Allow SSH access to worker nodes"
   }
   # Allow worker nodes to receive traffic from control plane
-  ingress {
-    from_port       = 1025
-    to_port         = 65535
-    protocol        = "tcp"
-    security_groups = [aws_security_group.eks_cluster_sg.id]
-  }
+  # ingress {
+  #   from_port       = 1025
+  #   to_port         = 65535
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.eks_cluster_sg.id]
+  # }
 
   # Allow worker nodes to receive HTTPS traffic from control plane
-  ingress {
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.eks_cluster_sg.id]
-  }
+  # ingress {
+  #   from_port       = 443
+  #   to_port         = 443
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.eks_cluster_sg.id]
+  # }
 
   # Allow pods to communicate with each other
   ingress {
