@@ -309,7 +309,7 @@ resource "aws_iam_role_policy_attachment" "eks_ebs_csi_policy" {
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "eks-cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
-  version  = "1.28"
+  version  = "1.29"
 
   vpc_config {
     subnet_ids              = concat(aws_subnet.eks_subnet_private[*].id, aws_subnet.eks_subnet_public[*].id)
