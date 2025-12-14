@@ -337,7 +337,7 @@ resource "aws_eks_node_group" "eks_node_group" {
 
   instance_types = ["t3.medium"]
   capacity_type  = "ON_DEMAND"
-  disk_size      = 20
+  disk_size      = 15
 
   update_config {
     max_unavailable = 1
