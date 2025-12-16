@@ -284,6 +284,28 @@ resource "aws_iam_role" "eks_node_group_role" {
   }
 }
 
+resource "aws_iam_role_policy" "nic_policy" {
+  name = "nic-policy"
+  role = aws_iam_role.nic_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:DetachNetworkInterface",
+          "ec2:DeleteNetworkInterface",
+          "ec2:DescribeNetworkInterfaces"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+
 resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
   role       = aws_iam_role.eks_node_group_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
@@ -373,16 +395,16 @@ resource "aws_eks_node_group" "eks_node_group" {
     role = "general"
   }
 }
-resource "aws_network_interface" "eks_eni_1" {
-  subnet_id       = "subnet-09014b3c57bb930a5"       # Replace with the subnet ID of this ENI
-  private_ips     = ["10.0.11.65"]         # Replace with the ENI’s private IP
-  security_groups = ["sg-069b8fc6982f20c7d, sg-09d44a5c030eb88ac"]  # SGs from describe output
-}
-resource "aws_network_interface" "eks_eni_2" {
-  subnet_id       = "subnet-02c1d46b8ae20c1f7"       # Replace with the subnet ID of this ENI
-  private_ips     = ["10.0.10.208"]         # Replace with the ENI’s private IP
-  security_groups = ["sg-069b8fc6982f20c7d, sg-09d44a5c030eb88ac"]  # SGs from describe output
-}
+# resource "aws_network_interface" "eks_eni_1" {
+#   subnet_id       = "subnet-09014b3c57bb930a5"       # Replace with the subnet ID of this ENI
+#   private_ips     = ["10.0.11.65"]         # Replace with the ENI’s private IP
+#   security_groups = ["sg-069b8fc6982f20c7d, sg-09d44a5c030eb88ac"]  # SGs from describe output
+# }
+# resource "aws_network_interface" "eks_eni_2" {
+#   subnet_id       = "subnet-02c1d46b8ae20c1f7"       # Replace with the subnet ID of this ENI
+#   private_ips     = ["10.0.10.208"]         # Replace with the ENI’s private IP
+#   security_groups = ["sg-069b8fc6982f20c7d, sg-09d44a5c030eb88ac"]  # SGs from describe output
+# }
 
 
 # # EKS Addons
