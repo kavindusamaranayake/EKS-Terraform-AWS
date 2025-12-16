@@ -284,6 +284,28 @@ resource "aws_iam_role" "eks_node_group_role" {
   }
 }
 
+resource "aws_iam_role" "nic_role" {
+  name = "nic-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"   # EC2 instances can assume this role
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "nic-role"
+  }
+}
+
+
 resource "aws_iam_role_policy" "nic_policy" {
   name = "nic-policy"
   role = aws_iam_role.nic_role.id
