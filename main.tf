@@ -373,7 +373,16 @@ resource "aws_eks_node_group" "eks_node_group" {
     role = "general"
   }
 }
-resource "aws_network_interface" "eks_eni_1" {}
+resource "aws_network_interface" "eks_eni_1" {
+  subnet_id       = "subnet-09014b3c57bb930a5"       # Replace with the subnet ID of this ENI
+  private_ips     = ["10.0.11.65"]         # Replace with the ENI’s private IP
+  security_groups = ["sg-069b8fc6982f20c7d, sg-09d44a5c030eb88ac"]  # SGs from describe output
+}
+resource "aws_network_interface" "eks_eni_2" {
+  subnet_id       = "subnet-02c1d46b8ae20c1f7"       # Replace with the subnet ID of this ENI
+  private_ips     = ["10.0.10.208"]         # Replace with the ENI’s private IP
+  security_groups = ["sg-069b8fc6982f20c7d, sg-09d44a5c030eb88ac"]  # SGs from describe output
+}
 
 
 # # EKS Addons
