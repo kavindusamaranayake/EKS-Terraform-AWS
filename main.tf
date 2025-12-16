@@ -373,6 +373,8 @@ resource "aws_eks_node_group" "eks_node_group" {
     role = "general"
   }
 }
+resource "aws_network_interface" "eks_eni_1" {}
+
 
 # # EKS Addons
 # resource "aws_eks_addon" "vpc_cni" {
